@@ -7,4 +7,4 @@
 | MoisesUrrutia | Moises Urrutia |
 | HovigJawichian | Hovig Jawichian |
 | Kaiba-156 | Carl von Bergen |
-| Content Cell  | Content Cell  |
+| Content Cell  | Chris Morales |
