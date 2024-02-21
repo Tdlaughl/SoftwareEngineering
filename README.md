@@ -10,4 +10,4 @@
 | ChrisMorale | Chris Morales |
 
 # What script to run to get all of the downloads
-To get the code to work you will run the script called "C++ Files" (Will add something along the lines of that)
+To get the code to work you will run the script called "run.bash"
