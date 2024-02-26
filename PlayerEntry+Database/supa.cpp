@@ -22,10 +22,11 @@
 // };
 
 
+//This code is derived from Trenton's "Team4-test1.cpp"
 
-
-//I didn't wish to change much of anything from Trenton's work, I tried to keep
-//any adjustments minimal, and I only touched code within decodeJSON to get the IDs.
+// I didn't wish to change much of anything from Trenton's work, I tried to keep
+// any adjustments minimal, and I only adjusted code within decodeJSON to get the IDs
+// and moved everything to a class for use in PlayerEntry
 
 
 #include "supa.h"
@@ -152,6 +153,8 @@ void Database::decodeJSON(const std::string& jsonString, std::vector<std::string
         for (const auto& j : jsonArray) {
             // Extract the codename from each object and add it to the vector
             codenames.push_back(j["codename"].get<std::string>());
+            
+            //Extracts the ids from the objects and adds them to the "ids" vector
             ids.push_back(j["id"].get<int>());
         }
     }
