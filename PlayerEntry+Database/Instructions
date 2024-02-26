@@ -1,1 +1,20 @@
-to do
+INSTRUCTIONS
+
+Get all of the files in this folder
+Ensure you ran the run.bash in the main to get all of the libraries.
+
+To compile: "  g++ -Wall *.cpp -o PlayerEntry.exe -lsfml-graphics -lsfml-window -lsfml-system -lcurl  "     (replace *.cpp if you want with the program filenames)
+Run using "   ./PlayerEntry.exe   "
+
+Player Entry screen should appear.
+
+To enter data: 
+  Hover your mouse point over the "cell" you wish to enter data     (Traditional keyboard controls do not work at present)
+  Left column is for IDs, right column for codenames
+  ID + Codename = Player
+  Typing with the mouse point over the cell will put text in the cell
+  Entering IDs that are already in the database will cause the codename associated to appear in the second column. (The ID/Codename combos already in the database should print to console on program start)
+  Press F12 to clear all of the cells
+  Press F5 to finish entering data       (Exiting the window normally will end the program prematurely)
+  You will be prompted in the console to enter the equipment ID for each Player with information for each team.
+  Once equipment IDs are entered, a very early prototype concept for the Play Action screen will appear displaying the information you entered.
