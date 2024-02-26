@@ -2,7 +2,7 @@ INSTRUCTIONS
 by Christian Morales
 
 
-Get all of the files in this folder
+Get all of the files in this folder, and insure they are all in the same folder together.
 Ensure you ran the run.bash in the main to get all of the libraries.
 
 To compile: "  g++ -Wall *.cpp -o PlayerEntry.exe -lsfml-graphics -lsfml-window -lsfml-system -lcurl  "     (replace *.cpp if you want with the program filenames)
