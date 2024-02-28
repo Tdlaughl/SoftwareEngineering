@@ -22,9 +22,9 @@
 // };
 
 
-//This code is derived from Trenton's "Team4-test1.cpp"
+//This code is derived from Hovig's "Team4-test1.cpp", which was based on Trenton's "databaseExample.cpp"
 
-// I didn't wish to change much of anything from Trenton's work, I tried to keep
+// I didn't wish to change much of anything from Hovig's or Trenton's work,so I tried to keep
 // any adjustments minimal, and I only adjusted code within decodeJSON to get the IDs
 // and moved everything to a class for use in PlayerEntry
 
