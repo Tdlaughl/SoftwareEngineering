@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo apt update
 sudo apt-get install libsfml-dev
 sudo apt install nlohmann-json3-dev
 sudo apt install g++
