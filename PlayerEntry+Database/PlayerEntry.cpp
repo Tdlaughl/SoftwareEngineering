@@ -19,10 +19,10 @@ class Player {
     public:
         std::string name;
         std::string ID;
-        int equipNum;
+        std::string equipNum;
         int points;
 
-    Player(const std::string& n, const std::string& i , const int e, const int p) : name(n), ID(i), equipNum(e), points(p) {}
+    Player(const std::string& n, const std::string& i , const std::string e, const int p) : name(n), ID(i), equipNum(e), points(p) {}
 };
 
 
@@ -38,12 +38,6 @@ struct Cell {
     Cell() : playerName(""), playerPoints(0) {}
 };
 
-// void setRectangle(sf::RectangleShape rec,  float posX, float posY)
-// {
-//     rec.setSize(sf::Vector2f(200.f, 100.f));
-//     rec.setPosition(posX, posY);
-
-// };
 
 int main() {
     Database hi;
@@ -68,6 +62,7 @@ int main() {
     
     std::string enterName = "test";
     std::string enterID = "12";
+    std::string enterEquipNum = "hi";
     //Player enterPlayer(enterName, enterID, 0);
 
 
@@ -91,7 +86,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(windowSizeX, windowSizeY), "Player Entry Screen");
 
     const int rows = 20;
-    const int columns = 2;
+    const int columns = 3;
     // const float cellWidth = 150.f;
     // const float cellHeight = 30.f;
 
@@ -99,8 +94,8 @@ int main() {
     std::vector<std::vector<Cell>> team2Table(rows, std::vector<Cell>(columns));
 
 
-    Player enterPlayer1(enterName, enterID, 0, 0);
-    Player enterPlayer2(enterName, enterID, 0, 0);
+    Player enterPlayer1(enterName, enterID, enterEquipNum, 0);
+    Player enterPlayer2(enterName, enterID, enterEquipNum, 0);
 
     sf::RectangleShape rectangleRed, rectangleGreen;
 
@@ -108,9 +103,8 @@ int main() {
     bool playAction = 0;
 
     //controls when an id(s) are inserted into the database
-    bool insertControl = 0;
 
-    int enterEquipNum = 0;
+    // int enterEquipNum = 0;
 
 
     while (window.isOpen()) {
@@ -210,8 +204,8 @@ int main() {
             }
         }
 
-        rectangleRed.setSize(sf::Vector2f(460.f, 850.f));
-        rectangleGreen.setSize(sf::Vector2f(460.f, 850.f));
+        rectangleRed.setSize(sf::Vector2f(490.f, 850.f));
+        rectangleGreen.setSize(sf::Vector2f(490.f, 850.f));
 
         rectangleRed.setPosition(75.0f, 50.0f);
         rectangleGreen.setPosition((windowSizeX/2)+75.0f, 50.0f);
@@ -225,13 +219,17 @@ int main() {
         window.draw(rectangleGreen);
 
 
+        int tryStoi = 0;
+        bool errorShow = 0;
+        float xPosTableIntial = 100.0f;
+        float xPosTableMultipier = 163.0f;
         // Draw team 1 entry table
         for (size_t i = 0; i < rows; ++i) {
             for (size_t j = 0; j < columns; ++j) {
 
-                team1Table[i][j].rect.setSize(sf::Vector2f(150.0f, 30.0f));
+                team1Table[i][j].rect.setSize(sf::Vector2f(120.0f, 30.0f));
                 team1Table[i][j].rect.setFillColor(sf::Color::White);  // Set color for team 1
-                team1Table[i][j].rect.setPosition(150.0f + j * 160.0f, 100.0f + i * 40.0f);
+                team1Table[i][j].rect.setPosition(xPosTableIntial + j * xPosTableMultipier, 100.0f + i * 40.0f);
                 window.draw(team1Table[i][j].rect);
 
                 sf::Font font;
@@ -240,7 +238,7 @@ int main() {
                     team1Table[i][j].text.setString(team1Table[i][j].playerName);
                     team1Table[i][j].text.setCharacterSize(12);
                     team1Table[i][j].text.setFillColor(sf::Color::Black);
-                    team1Table[i][j].text.setPosition(150.0f + j * 160.0f, 100.0f + i * 40.0f);
+                    team1Table[i][j].text.setPosition(xPosTableIntial + j * xPosTableMultipier, 100.0f + i * 40.0f);
                     window.draw(team1Table[i][j].text);
                     
                 }
@@ -252,6 +250,8 @@ int main() {
                 //If that ID matches one within the database, the codename matched to the ID is auto
                 // put into the table.
 
+                //If the entered ID/EquipNum isn't a number, it is erased.
+
                 //TODO
                 //If that ID is not in the database, the id number and whatever entry put into the second 
                 //column are inserted into the database
@@ -262,12 +262,45 @@ int main() {
                     for (unsigned long x = 0; x < hi.ids.size(); x++)
                     {
                         tempID = team1Table[i][0].playerName;
-                        //std::cout << team1Table[i][1].playerName << std::endl;
-                        
-                        if((stoi(tempID)) == hi.ids[x])
+                        string tempEquipNum = team1Table[i][2].playerName;
+
+                        //equipNums
+                        try {
+                            tryStoi = stoi(tempEquipNum);
+                        }
+                        catch(exception &err)
+                        {
+                            if (errorShow == 0)
+                            {
+                                // std::cout << "Invalid ID" << endl;
+                                errorShow = 1;
+                            }
+                            
+                            team1Table[i][2].playerName = "";
+                            tryStoi = 0;
+                        }
+
+
+                        //IDS
+                        try {
+                            tryStoi = stoi(tempID);
+                        }
+                        catch(exception &err)
+                        {
+                            if (errorShow == 0)
+                            {
+                                // std::cout << "Invalid ID" << endl;
+                                errorShow = 1;
+                            }
+                            
+                            team1Table[i][0].playerName = "";
+                            tryStoi = 0;
+                        }
+
+                        if((tryStoi) == hi.ids[x])
                         {
                             team1Table[i][1].playerName = hi.codenames[x];
-                            insertControl = 1;
+                            // = 1;
                         }
                         else
                         {
@@ -282,6 +315,7 @@ int main() {
                         }
                         tempID = "";
                     } 
+                    errorShow = 0;
                 }
                 // for successful matches, put them in an array/vector, then do something simlar to play action
                 // flip a variable and iterate through the array and prompt for the equipment number.
@@ -297,9 +331,9 @@ int main() {
         // Draw team 2 entry table
         for (size_t i = 0; i < rows; ++i) {
             for (size_t j = 0; j < columns; ++j) {
-                team2Table[i][j].rect.setSize(sf::Vector2f(150.0f, 30.0f));
+                team2Table[i][j].rect.setSize(sf::Vector2f(120.0f, 30.0f));
                 team2Table[i][j].rect.setFillColor(sf::Color::White);  // Set color for team 2
-                team2Table[i][j].rect.setPosition((windowSizeX/2) + 150.0f + j * 160.0f, 100.0f + i * 40.0f);
+                team2Table[i][j].rect.setPosition((windowSizeX/2) + xPosTableIntial + j * xPosTableMultipier, 100.0f + i * 40.0f);
                 window.draw(team2Table[i][j].rect);
 
                 sf::Font font;
@@ -308,7 +342,7 @@ int main() {
                     team2Table[i][j].text.setString(team2Table[i][j].playerName);
                     team2Table[i][j].text.setCharacterSize(12);
                     team2Table[i][j].text.setFillColor(sf::Color::Black);
-                    team2Table[i][j].text.setPosition((windowSizeX/2) + 150.0f + j * 160.0f, 100.0f + i * 40.0f);
+                    team2Table[i][j].text.setPosition((windowSizeX/2) + xPosTableIntial + j * xPosTableMultipier, 100.0f + i * 40.0f);
                     window.draw(team2Table[i][j].text);
                     
                 }
@@ -319,12 +353,47 @@ int main() {
                     for (unsigned long x = 0; x < hi.ids.size(); x++)
                     {
                         tempID = team2Table[i][0].playerName;
-                        //std::cout << team1Table[i][1].playerName << std::endl;
+                        // string tempEquipNum = team2Table
+                        //std::cout << team1Table[i][2].playerName << std::endl;
+
+                        string tempEquipNum = team2Table[i][2].playerName;
+
+                        //equipNums
+                        try {
+                            tryStoi = stoi(tempEquipNum);
+                        }
+                        catch(exception &err)
+                        {
+                            if (errorShow == 0)
+                            {
+                                // std::cout << "Invalid ID" << endl;
+                                errorShow = 1;
+                            }
+                            
+                            team2Table[i][2].playerName = "";
+                            tryStoi = 0;
+                        }
+                                                
                         
-                        if((stoi(tempID)) == hi.ids[x])
+                        try {
+                            tryStoi = stoi(tempID);
+                        }
+                        catch(exception &err)
+                        {
+                            if (errorShow == 0)
+                            {
+                                // std::cout << "Invalid equipNum" << endl;
+                                errorShow = 1;
+                            }
+                            
+                            team2Table[i][0].playerName = "";
+                            // tryStoi = "";
+                        }
+                        
+                        if(tryStoi == hi.ids[x])
                         {
                             team2Table[i][1].playerName = hi.codenames[x];
-                            insertControl = 1;
+                            // = 1;
                         }
                         else
                         {
@@ -408,6 +477,10 @@ int main() {
         enterName = team1Table[i][1].playerName;
         enterPlayer1.name = enterName;
 
+        // std::cout << team1Table[i][2].playerName << std::endl;
+
+        enterPlayer1.equipNum = team1Table[i][2].playerName;
+
 
 
 
@@ -417,22 +490,25 @@ int main() {
         enterName = team2Table[i][1].playerName;
         enterPlayer2.name = enterName;
 
+        enterPlayer2.equipNum = team2Table[i][2].playerName;
 
-        if (insertControl == 1)
-        {
-            if (team1Table[i][0].playerName != "")
-            {
-                std::cout << "Enter the equipment number for Red Player " << i  << ":" << std::endl;
-                cin >> enterEquipNum;
-                enterPlayer1.equipNum = enterEquipNum;
-            }
-            if (team2Table[i][0].playerName != "")
-            {
-                std::cout << "Enter the equipment number for Green Player " << i  << ":" << std::endl;
-                cin >> enterEquipNum;
-                enterPlayer2.equipNum = enterEquipNum;
-            }
-        }
+
+        // if (// == 1)
+        // {
+        //     if (team1Table[i][0].playerName != "")
+        //     {
+        //         std::cout << "Enter the equipment number for Red Player " << i  << ":" << std::endl;
+        //         cin >> enterEquipNum;
+        //         enterPlayer1.equipNum = enterEquipNum;
+        //         // equipNumInsert(enterPlayer1);
+        //     }
+        //     if (team2Table[i][0].playerName != "")
+        //     {
+        //         std::cout << "Enter the equipment number for Green Player " << i  << ":" << std::endl;
+        //         cin >> enterEquipNum;
+        //         enterPlayer2.equipNum = enterEquipNum;
+        //     }
+        // }
         playerListRed.push_back(enterPlayer1);
         playerListGreen.push_back(enterPlayer2);
     }
@@ -461,7 +537,7 @@ int main() {
             }
 
             // SFML rendering
-            window2.clear(sf::Color::White);
+            window2.clear(sf::Color::Black);
 
             // Draw the list of players on the window
             sf::Font font;
@@ -476,9 +552,11 @@ int main() {
                 for (const auto& player : playerListRed) {
                     if (player.ID != "")
                     {
-                    // int points = 0;
-                    // std::cin >> points;
-                    text.setString(player.ID + "   " + player.name + "   EquipNum: " + std::to_string(player.equipNum) + "     Points: " + std::to_string(player.points));
+
+                    // text.setString("ID: " + player.ID + "   Codename: " + player.name + "   EquipNum: " + player.equipNum + "     Points: " + std::to_string(player.points));
+                    
+                    text.setString("ID: " + player.ID + "     Points: " + std::to_string(player.points));
+
                     text.setPosition(50.0f, yPosition);
                     window2.draw(text);
 
@@ -499,7 +577,10 @@ int main() {
                     {
                         // int points = 0;
                         // std::cin >> points;
-                        text.setString(player.ID + "   " + player.name + "   EquipNum: " + std::to_string(player.equipNum) + "    Points: " + std::to_string(player.points));
+                        // text.setString("ID: " + player.ID + "   Codename: " + player.name + "   EquipNum: " + player.equipNum + "     Points: " + std::to_string(player.points));
+                        
+                        text.setString("ID: " + player.ID + "     Points: " + std::to_string(player.points));
+                        
                         text.setPosition((windowSizeX / 2) + 50.0f, yPosition);
                         window2.draw(text);
 
@@ -508,13 +589,23 @@ int main() {
 
                 }
             }
+            sf::RectangleShape rectangleAction;
+            rectangleAction.setSize(sf::Vector2f(windowSizeX - 200.0, (windowSizeY/2)));
+
+            rectangleAction.setPosition(100.0f, (windowSizeY/2) - 50);
+
+            rectangleAction.setFillColor(sf::Color::White);
+
+
+
+            window2.draw(rectangleAction);
 
             window2.display();
         }
 
         return 0;
     }
-    }
+}
 // //cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release .
 
 // //mingw32-make clean
