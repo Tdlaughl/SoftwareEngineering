@@ -1,0 +1,4 @@
+READ ME:
+The reason the music tracks were converted from  mp3 audio file to ogg audio file was because 
+SFML supports the audio file formats WAV, OGG/Vorbis and FLAC. 
+Due to licensing issues MP3 is not supported.
