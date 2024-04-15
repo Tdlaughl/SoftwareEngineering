@@ -5,7 +5,7 @@ const int bufferSize = 1024;
 const int serverPort = 7500; // Port to send to
 const int clientPort = 7501; // Port to listen on
 const char* serverIPAddress = "127.0.0.1";
-const int durationSeconds = 600; // 10 minutes
+const int durationSeconds = 30; // Time limit of game (For testing 30, for finished project 600)
 
     // Create UDP socket
     int clientSocket;
@@ -48,14 +48,6 @@ const int durationSeconds = 600; // 10 minutes
     while (true) {
         // Get current time
         currentTime = time(nullptr);
-
-        // Check if 10 minutes have elapsed
-        if (currentTime - startTime >= durationSeconds)
-        {
-            std::string endCode = "221";
-            sendto(clientSocket, endCode.c_str(), endCode.length(), 0, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
-            break;
-        }
 
         // Create UDP socket for receiving messages
         int serverSocket;
@@ -122,6 +114,14 @@ const int durationSeconds = 600; // 10 minutes
 
         sendto(serverSocket, target_player.c_str(), target_player.length(), 0, (struct sockaddr*)&serverAddr, serverAddrLen);
         ack_message = "";
+
+        // Check if time limit has elapsed
+        if (currentTime - startTime >= durationSeconds)
+        {
+            std::string endCode = "221";
+            sendto(clientSocket, endCode.c_str(), endCode.length(), 0, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
+            break;
+        }
 
         // Close server socket
         close(serverSocket);

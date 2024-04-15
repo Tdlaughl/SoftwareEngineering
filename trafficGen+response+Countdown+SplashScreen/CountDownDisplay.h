@@ -18,6 +18,7 @@ public:
     void setAckMessage(const std::string& message);
     void updateAndRender();
     void run();
+    std::string getAckMessage();
 };
 
 #endif // COUNTDOWN_DISPLAY_H

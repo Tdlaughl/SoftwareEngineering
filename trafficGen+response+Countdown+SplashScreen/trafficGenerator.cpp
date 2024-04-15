@@ -101,7 +101,6 @@ const char* serverIPAddress = "127.0.0.1";
         char buffer[bufferSize];
         socklen_t len = sizeof(clientAddr);
         recvfrom(serverSocket, buffer, bufferSize, 0, (struct sockaddr*)&clientAddr, &len);
-        std::cout << "BUFFER: " << buffer << std::endl;
         received_data = buffer;
         std::cout << "Received from game software: " << received_data << std::endl;
         std::cout << std::endl;

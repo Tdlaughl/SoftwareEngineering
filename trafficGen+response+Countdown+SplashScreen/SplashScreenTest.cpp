@@ -16,6 +16,9 @@
 using namespace std;
 
 int main() {
+	//Starts the generateTraffic code which starts the "game"
+	std::thread trafficThread(generateTraffic);
+	
     // Window initialization
     sf::RenderWindow window(sf::VideoMode(1000, 1000), "Splash Screen", sf::Style::Close | sf::Style::Resize);
 
@@ -47,9 +50,6 @@ int main() {
     CountdownDisplay countdownDisplay(window);
     countdownDisplay.run();
 
-	std::thread trafficThread(generateTraffic);
-
-	sleep(3);
     // Create a thread for the response
     std::thread responseThread(response, std::ref(countdownDisplay));
 

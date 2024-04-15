@@ -27,8 +27,11 @@ CountdownDisplay::CountdownDisplay(sf::RenderWindow& win) : window(win), countdo
 
 void CountdownDisplay::setAckMessage(const std::string& message) {
     ackMessage = message;
+}
 
-    std::cout << "Message: " << ackMessage << std::endl;
+std::string CountdownDisplay::getAckMessage()
+{
+    return ackMessage;
 }
 
 void CountdownDisplay::updateAndRender() {
