@@ -20,6 +20,7 @@ To enter data:
   Press F12 to clear all of the cells
   Press F5 to finish entering data       (Exiting the window normally will end the program prematurely)
   You will be prompted in the console to enter the equipment ID for each Player with information for each team.
-  Once equipment IDs are entered, an early prototype concept for the Play Action screen will appear displaying the information you entered.
+  Once equipment IDs are entered, the Play Action screen will appear displaying the information you entered.
+  Press the left arrow key to generate events in the scrolling text box.
 
   *If you want to see the equipment numbers, there is a commented out print statement next to the normal print statement in the PlayAction code that will show that info.
