@@ -2,6 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include <list>
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 
 //Somewhat in progress PlayerEntry screen
@@ -20,6 +24,7 @@ class Player {
         std::string name;
         std::string ID;
         std::string equipNum;
+        bool hitBase = 0;
         int points;
 
     Player(const std::string& n, const std::string& i , const std::string e, const int p) : name(n), ID(i), equipNum(e), points(p) {}
@@ -39,11 +44,11 @@ struct Cell {
 };
 
 
+
 int main() {
     Database hi;
     string readBuffer = "";
     hi.displayDatabase(readBuffer);
-    //std::vector<std::string> codenames;
 
     hi.decodeJSON(readBuffer, hi.codenames);
     // std::cout << "Extracted codenames:" << std::endl;
@@ -53,32 +58,19 @@ int main() {
     // std::cout << hi.ids[1] << std::endl;
     string tempID;
 
+    srand (time(NULL));
 
-
-
-    //hi.supa();
-    //sf::Font font;
-    //font.loadFromFile("./arial.ttf");
     
     std::string enterName = "test";
     std::string enterID = "12";
     std::string enterEquipNum = "hi";
-    //Player enterPlayer(enterName, enterID, 0);
 
 
     // Create a list of players
     std::vector<Player> playerListRed = {
-        // {"Player1", 10},
-        // {"Player2", 5},
-        // {"Player3", 8},
-        // Add more players as needed
     };
 
     std::vector<Player> playerListGreen = {
-        // {"Player1", 10},
-        // {"Player2", 5},
-        // {"Player3", 8},
-        // Add more players as needed
     };
 
     int windowSizeX = 1250;
@@ -103,8 +95,6 @@ int main() {
     bool playAction = 0;
 
     //controls when an id(s) are inserted into the database
-
-    // int enterEquipNum = 0;
 
 
     while (window.isOpen()) {
@@ -411,17 +401,26 @@ int main() {
                 }
             }
         }
-        Cell redTeam;
-        Cell greenTeam;
+
+
+        /*Sets up text descriptors, redTeam and greenTeam are the text above the tables that say 
+            Red Team and Green Team
+
+            ID, codename and equipN describe their respective columns for both team tables
+            ID is first column, Codename is the second column, 
+
+        */
+        Cell redTeam,greenTeam,ID, codename, equipN;
+  
         sf::Font font;
         redTeam.rect.setSize(sf::Vector2f(150.0f, 30.0f));
         redTeam.rect.setFillColor(sf::Color::Red);
-        redTeam.rect.setPosition(225.0f, 20.0f);
+        redTeam.rect.setPosition(250.0f, 20.0f);
         window.draw(redTeam.rect);
         
         greenTeam.rect.setSize(sf::Vector2f(150.0f, 30.0f));
         greenTeam.rect.setFillColor(sf::Color::Green);
-        greenTeam.rect.setPosition((windowSizeX/2) + 225.0f, 20.0f);
+        greenTeam.rect.setPosition((windowSizeX/2) + 250.0f, 20.0f);
         window.draw(greenTeam.rect);
         if (font.loadFromFile("./arial.ttf"))
         {
@@ -429,15 +428,58 @@ int main() {
             redTeam.text.setString("Red Team");
             redTeam.text.setCharacterSize(18);
             redTeam.text.setFillColor(sf::Color::White);
-            redTeam.text.setPosition(260.0f, 25.0f);
+            redTeam.text.setPosition(285.0f, 25.0f);
             window.draw(redTeam.text);
             
             greenTeam.text.setFont(font);
             greenTeam.text.setString("Green Team");
             greenTeam.text.setCharacterSize(18);
             greenTeam.text.setFillColor(sf::Color::White);
-            greenTeam.text.setPosition((windowSizeX/2) + 250.0f, 25.0f);
+            greenTeam.text.setPosition((windowSizeX/2) + 275.0f, 25.0f);
             window.draw(greenTeam.text);
+
+            ID.text.setFont(font);
+            ID.text.setString("ID");
+            ID.text.setCharacterSize(18);
+            ID.text.setFillColor(sf::Color::White);
+            ID.text.setPosition(150.0f, 70.0f);
+            window.draw(ID.text);
+
+            ID.text.setPosition((windowSizeX/2) + 150.0f, 70.0f);
+            window.draw(ID.text);
+
+
+            codename.text.setFont(font);
+            codename.text.setString("Codename");
+            codename.text.setCharacterSize(18);
+            codename.text.setFillColor(sf::Color::White);
+            codename.text.setPosition(278.0f, 70.0f);
+            window.draw(codename.text);
+
+            codename.text.setPosition((windowSizeX/2) + 278.0f, 70.0f);
+            window.draw(codename.text);
+
+
+            equipN.text.setFont(font);
+            equipN.text.setString("Equip Num");
+            equipN.text.setCharacterSize(18);
+            equipN.text.setFillColor(sf::Color::White);
+            equipN.text.setPosition(443.0f, 70.0f);
+            window.draw(equipN.text);
+
+            equipN.text.setPosition(((windowSizeX/2)) + 443.0f, 70.0f);
+            window.draw(equipN.text);
+
+
+
+            // ID2.text.setFont(font);
+            // ID2.text.setString("ID");
+            // ID2.text.setCharacterSize(18);
+            // ID2.text.setFillColor(sf::Color::White);
+            // ID2.text.setPosition((windowSizeX/2) + 150.0f, 70.0f);
+            // window.draw(ID2.text);
+
+
         }
             
 
@@ -513,20 +555,23 @@ int main() {
         playerListGreen.push_back(enterPlayer2);
     }
 
-
-    // int select = 0;
-    // int teamSelect = 0;
     
 
     // //Randomly choose one for testing, for implementation 
     // int updateShot = 0; //points of shot
     // int updateBase = 2;
 
-    // SFML rendering code (optional for visualization)
+    // SFML rendering code
     if (playAction == 1)
     {
-        
+        bool initialFillCtrl = 0;
         sf::RenderWindow window2(sf::VideoMode(windowSizeX, windowSizeY), "Play Action");
+        std::list<sf::Text> actionEvents;
+        sf::Clock cooldownTimer;
+        const sf::Time cooldownDuration = sf::milliseconds(300);
+
+
+
 
         while (window2.isOpen()) {
             sf::Event event;
@@ -536,8 +581,12 @@ int main() {
                 }
             }
 
+            int redPlayerCount = 0;
+            int greenPlayerCount = 0;
+
             // SFML rendering
             window2.clear(sf::Color::Black);
+
 
             // Draw the list of players on the window
             sf::Font font;
@@ -553,15 +602,25 @@ int main() {
                     if (player.ID != "")
                     {
 
-                    // text.setString("ID: " + player.ID + "   Codename: " + player.name + "   EquipNum: " + player.equipNum + "     Points: " + std::to_string(player.points));
-                    
-                    text.setString("ID: " + player.ID + "     Points: " + std::to_string(player.points));
+                        // text.setString("ID: " + player.ID + "   Codename: " + player.name + "   EquipNum: " + player.equipNum + "     Points: " + std::to_string(player.points));
+                        
+                        if (player.hitBase == 1)
+                        {
+                            text.setString("B " + player.name + "     " + std::to_string(player.points));
+                        }
+                        else
+                        {
+                            text.setString(player.name + "     " + std::to_string(player.points));
+                        }
+                        
 
-                    text.setPosition(50.0f, yPosition);
-                    window2.draw(text);
+                        text.setPosition(50.0f, yPosition);
+                        window2.draw(text);
 
-                    yPosition += 30.0f; 
+                        yPosition += 30.0f;
+                        redPlayerCount = redPlayerCount + 1;
                     }
+                    
 
                 }
 
@@ -575,37 +634,213 @@ int main() {
                 for (const auto& player : playerListGreen) {
                     if (player.ID != "")
                     {
-                        // int points = 0;
-                        // std::cin >> points;
-                        // text.setString("ID: " + player.ID + "   Codename: " + player.name + "   EquipNum: " + player.equipNum + "     Points: " + std::to_string(player.points));
+                        if (player.hitBase == 1)
+                        {
+                            text.setString("B " + player.name + "     " + std::to_string(player.points));
+                        }
+                        else
+                        {
+                            text.setString(player.name + "     " + std::to_string(player.points));
+                        }
                         
-                        text.setString("ID: " + player.ID + "     Points: " + std::to_string(player.points));
                         
                         text.setPosition((windowSizeX / 2) + 50.0f, yPosition);
                         window2.draw(text);
 
                         yPosition += 30.0f;
+                        greenPlayerCount = greenPlayerCount + 1;
                     }
+                    
 
                 }
             }
+
+            sf::Color recColor(66, 99, 245);
+
             sf::RectangleShape rectangleAction;
             rectangleAction.setSize(sf::Vector2f(windowSizeX - 200.0, (windowSizeY/2)));
 
             rectangleAction.setPosition(100.0f, (windowSizeY/2) - 50);
 
-            rectangleAction.setFillColor(sf::Color::White);
-
-
-
+            rectangleAction.setFillColor(recColor);
             window2.draw(rectangleAction);
+
+            
+
+            // sf::Text eventText;
+            // eventText.setFont(font);
+            // eventText.setCharacterSize(20);
+            // eventText.setFillColor(sf::Color::White);
+
+
+            // cout << initialFillCtrl;
+            if (initialFillCtrl != 1)
+            {
+                // cout << "whiy";
+                for (int i = 0; i < 10; i++)
+                {
+                    // setup Events with 10 empty strings
+                    sf::Text eventText;
+                    eventText.setFont(font);
+                    eventText.setCharacterSize(20);
+                    eventText.setFillColor(sf::Color::White);
+                    eventText.setString("hello");
+                    actionEvents.push_front(eventText);
+                    // cout << "hello" << endl;
+
+                }
+                initialFillCtrl = 1;
+            }
+
+
+
+            // cout << redPlayerCount;
+            //add new messages to front of list?
+            int playerSelectRed;
+            int playerSelectGreen;
+            if (cooldownTimer.getElapsedTime() >= cooldownDuration) {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+                {
+                    // cout << "left";
+                    std::string leftMessage;
+
+                    //Random number used to determine what action to take in the context of the traffic generator
+                    int random = rand() % 10 + 1;
+
+
+
+                    //Up above redPlayerCount and greenPlayerCount count the number of entries in the lists that have
+                    // an ID entered.
+
+                    //playerSelectRed && playerSelectGreen randomly determine the players to be chosen in the events
+                    // based on the counts in the lists.
+
+                    // in a hypothetical list of 3 entries, these variables would pick which of the three to use
+
+                    //If a list has no entries, the variables are set to 0, meaning empty strings will be displayed.
+                    if (redPlayerCount != 0)
+                    {
+                        playerSelectRed = rand() % redPlayerCount;
+                    }
+                    else
+                    {
+                        playerSelectRed = 0;
+                    }
+
+                    if (greenPlayerCount != 0)
+                    {
+                        playerSelectGreen = rand() % greenPlayerCount;
+                    }
+                    else
+                    {
+                        playerSelectGreen = 0;
+                    }
+                    
+                    
+
+                    //
+                    if (random >= 9)
+                    {
+                        if (random == 9)
+                        {
+                            if (playerListRed[playerSelectRed].hitBase != 1)
+                            {
+                                leftMessage = "Base hit by " + playerListRed[playerSelectRed].name;
+                                playerListRed[playerSelectRed].hitBase = 1;
+                                playerListRed[playerSelectRed].points = playerListRed[playerSelectRed].points + 100;
+                            }
+                            else
+                            {
+                                leftMessage = "Base already hit by " + playerListRed[playerSelectRed].name;
+                            }
+
+                        }
+                        else if(random == 10)
+                        {
+                            if (playerListGreen[playerSelectGreen].hitBase != 1)
+                            {
+                                leftMessage = "Base hit in the gap by " + playerListGreen[playerSelectGreen].name;
+                                playerListGreen[playerSelectGreen].hitBase = 1;
+                                playerListGreen[playerSelectGreen].points = playerListGreen[playerSelectGreen].points + 100;
+                            }
+                            else
+                            {
+                                leftMessage = "Base already hit by " + playerListGreen[playerSelectGreen].name;
+                            }
+
+                        }
+                        
+                    }
+                    else if(random < 9 && random > 5)
+                    {
+                        // if(playerListRed[playerSelectRed].name)
+                        leftMessage = playerListRed[playerSelectRed].name + " hit " + playerListGreen[playerSelectGreen].name;
+                        playerListRed[playerSelectRed].points = playerListRed[playerSelectRed].points + 10;
+                    }
+                    else if(random <= 5)
+                    {
+                        // if(playerListRed[playerSelectRed].name)
+                        leftMessage = playerListGreen[playerSelectGreen].name + " hit " + playerListRed[playerSelectRed].name;
+                        playerListGreen[playerSelectGreen].points = playerListGreen[playerSelectGreen].points + 10;
+                    }
+                    // leftMessage = "hallo ";
+
+                    sf::Text leftText;
+                    leftText.setFont(font);
+                    leftText.setCharacterSize(20);
+                    leftText.setFillColor(sf::Color::White);
+                    leftText.setString(leftMessage);
+
+                    // eventText.setString("left");
+
+                    actionEvents.push_front(leftText);
+
+                    actionEvents.pop_back();
+                    cooldownTimer.restart();
+                    // count = count + 1;
+                }
+                else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+                {
+                    // cout << "right";
+
+                    sf::Text leftText;
+                    leftText.setFont(font);
+                    leftText.setCharacterSize(20);
+                    leftText.setFillColor(sf::Color::White);
+                    leftText.setString("right");
+
+                    // eventText.setString("left");
+
+                    actionEvents.push_front(leftText);
+
+                    // actionEvents.push_front(eventText);
+
+                    actionEvents.pop_back();
+                    cooldownTimer.restart();
+                }
+            }
+
+            float xEventPos = 120;
+            float yEventPos = (windowSizeY/2) - 20;
+            for(sf::Text& message : actionEvents)
+            {
+                //bottom up, pop the last item in the list off
+
+                //draw events
+                message.setPosition(xEventPos, yEventPos);
+
+                window2.draw(message);
+
+
+                yEventPos = yEventPos + 40;
+            }
 
             window2.display();
         }
 
         return 0;
     }
-}
+    }
 // //cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release .
 
 // //mingw32-make clean
