@@ -19,8 +19,25 @@ To enter data:
   Entering IDs that are already in the database will cause the codename associated to appear in the second column. (The ID/Codename combos already in the database should print to console on program start)
   Press F12 to clear all of the cells
   Press F5 to finish entering data       (Exiting the window normally will end the program prematurely)
-  You will be prompted in the console to enter the equipment ID for each Player with information for each team.
-  Once equipment IDs are entered, the Play Action screen will appear displaying the information you entered.
+
+  The Play Action screen will appear displaying the information you entered.
   Press the left arrow key to generate events in the scrolling text box.
 
-  *If you want to see the equipment numbers, there is a commented out print statement next to the normal print statement in the PlayAction code that will show that info.
+
+
+sudo chmod 777 arial.ttf 
+to give permissions
+
+
+more info
+On lines ~129, need a broadcast to send the equipment ids, the comments layout more stuff. 
+
+Lines 645, 710/759, some stuff was added that I thought might help, playerSelectedPlace should allow you to select players from the two tables according to received data and update the 
+respective players data accordingly.
+
+
+The pseudo-traffic generator below that need redoing with the UDP communication.
+
+I'm sorry, I wanted to do more initial setup to help you with setting up the UDP, but time is running short for me and I just wanted to get you something to work with before it was truly too late.
+
+I might be able to help some in this evening and maybe tommorow morning.
