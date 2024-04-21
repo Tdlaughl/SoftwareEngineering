@@ -14,6 +14,7 @@
 #include <thread>
 #include "response.h"
 #include "trafficGenerator.h"
+//#include <SFML/Audio.hpp>
 
 CountdownDisplay::CountdownDisplay(sf::RenderWindow& win) : window(win), countdown(30) {
     // Load textures
@@ -87,3 +88,34 @@ void CountdownDisplay::run() {
         updateAndRender();
     }
 }
+
+
+/*
+class CountdownDisplay {
+private:
+    // Add a member variable for sound
+    sf::Sound sound;
+    sf::SoundBuffer soundBuffer;
+
+    // Other members remain unchanged
+
+public:
+  void CountdownDisplay(sf::RenderWindow& win) : window(win), countdown(30) {
+        
+        // Load sound from file
+        if (!soundBuffer.loadFromFile("audio files for software engineering_track01.ogg")) {
+            std::cerr << "Error loading audio file" << std::endl;
+            // Handle error loading audio file
+        }
+        sound.setBuffer(soundBuffer); // Set sound buffer
+    }
+
+    // Other member functions remain unchanged
+
+    // Function to play the sound
+    void playSound() {
+        sound.play();
+    }
+};
+
+*/
