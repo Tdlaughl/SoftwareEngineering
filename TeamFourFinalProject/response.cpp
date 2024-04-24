@@ -22,7 +22,7 @@ const int bufferSize = 1024;
 const int serverPort = 7500; // Port to send to
 const int clientPort = 7501; // Port to listen on
 const char* serverIPAddress = "127.0.0.1";
-const int durationSeconds = 30; // Time limit of game (For testing 30, for finished project 600)
+const int durationSeconds = 360; // Time limit of game (For testing 30, for finished project 360)
 
     // Create UDP socket
     int clientSocket;

@@ -73,6 +73,8 @@ struct actionMessage {
 
 
 int main() {
+    while (true)
+    {
     Database hi;
     string readBuffer = "";
     hi.displayDatabase(readBuffer);
@@ -622,10 +624,12 @@ int main() {
 
     int redPoints = 0;
     int greenPoints = 0;
+    const sf::Time gameTime = sf::second(390);
 
     // SFML rendering code
     if (playAction == 1)
     {
+        sf::Clock gameTimer;
 
         for (int i = 0; i < rows; ++i)
         {
@@ -692,7 +696,7 @@ int main() {
 
 
         while (window2.isOpen()) {
-
+            
             sf::Event event;
             while (window2.pollEvent(event)) {
                 if (event.type == sf::Event::Closed) {
@@ -882,16 +886,10 @@ int main() {
             }
 
 
-
-            // cout << redPlayerCount;
-            //add new messages to front of list?
-            int playerSelectRed;
-            int playerSelectGreen;
-
-
             //Meat and potatoes of it
             sleep(1);
-
+            if (gameTimer.getElapsedTime() >= gameTime)
+            {
             if (cooldownTimer.getElapsedTime() >= cooldownDuration) {
                     actionMessage message;
 
@@ -931,8 +929,6 @@ int main() {
                     targetPlayer = countdownDisplay.getTargetPlayer();
 
                     int attackerPlayerNum = stoi(attackerPlayer);
-                    int targetPlayerNum = stoi(targetPlayer);
-
 
                     //Up above redPlayerCount and greenPlayerCount count the number of entries in the lists that have
                     // an ID entered.
@@ -944,18 +940,20 @@ int main() {
                     
                     std::string ack_message = "";
                     // Acknowledge the message
+                
                     if (targetPlayer != "43" && targetPlayer != "53")
                     {
-                        ack_message = "Received hit from player " + attackerPlayer + " on player " + targetPlayer;
                         if(attackerPlayerNum % 2 == 0)
                         {
-                            playerListGreen[attackerPlayerNum].points += 10;
+                            ack_message = "Received hit from " + playerListGreen[stoi(attackerPlayer) / greenPlayerCount - 1].name + " on " + playerListRed[stoi(targetPlayer) / redPlayerCount].name;
+                            playerListGreen[attackerPlayerNum / greenPlayerCount - 1].points += 10;
                             pointTotalGreen += 10;
                         }
                         else
                         {
-                            playerListRed[attackerPlayerNum].points += 10;
+                            playerListRed[attackerPlayerNum / redPlayerCount].points += 10;
                             pointTotalRed += 10;
+                            ack_message = "Received hit from " + playerListRed[stoi(attackerPlayer) / redPlayerCount].name + " on " + playerListGreen[stoi(targetPlayer) / greenPlayerCount - 1].name;
                         }
                         whiteText.setString(ack_message);
                         message.text1 = whiteText;
@@ -964,8 +962,8 @@ int main() {
                     {
                         if (targetPlayer == "43")
                         {
-                            ack_message = "Received hit from player " + attackerPlayer + " on the green base";
-                            playerListRed[attackerPlayerNum].points = playerListRed[attackerPlayerNum].points + 100;
+                            ack_message = "Received hit from " + playerListRed[stoi(attackerPlayer) / redPlayerCount].name + " on the green base";
+                            playerListRed[attackerPlayerNum / 2].points = playerListRed[attackerPlayerNum / 2].points + 100;
 
                             whiteText.setString(ack_message);
                             pointTotalRed += 100;
@@ -973,8 +971,8 @@ int main() {
                         }
                         else
                         {
-                            ack_message = "Received hit from player " + attackerPlayer + " on the red base";
-                            playerListGreen[attackerPlayerNum].points += 100;
+                            ack_message = "Received hit from " + playerListGreen[stoi(attackerPlayer) / greenPlayerCount - 1].name + " on the red base";
+                            playerListGreen[attackerPlayerNum / 2 - 1].points += 100;
 
                             whiteText.setString(ack_message);
                             pointTotalGreen += 100;
@@ -1011,7 +1009,7 @@ int main() {
                     // count = count + 1;            
   
             }
-            
+        }
             redPoints = redPoints + pointTotalRed;
             greenPoints = greenPoints + pointTotalGreen;
 
@@ -1053,6 +1051,7 @@ int main() {
 
         trafficThread.join();
         responseThread.join();
+    }
         return 0;
     }
     }
