@@ -14,6 +14,10 @@
 #include <thread>
 #include "response.h"
 #include "trafficGenerator.h"
+#include <SFML/Audio.hpp>
+
+using namespace std;
+
 
 CountdownDisplay::CountdownDisplay(sf::RenderWindow& win) : window(win), countdown(30) {
     // Load textures
@@ -76,14 +80,7 @@ void CountdownDisplay::run() {
             --countdown;
             clock.restart();
         }
-        if (countdown == 0) {
-            // std::thread trafficThread(generateTraffic);
-            // sf::sleep(sf::seconds(10));
-            // std::thread responseThread(response);
-            // // Join the threads with the main thread
-            // trafficThread.join();
-            // responseThread.join();
-        }
         updateAndRender();
     }
 }
+

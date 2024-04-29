@@ -148,9 +148,6 @@ int main() {
                         //Should be able to broadcast the equipnumber from here
                         //When enter is pressed, all rows with their columns filled will activate code in the if statement
                         //Don't know if this will be a problem,
-                        std::thread trafficThread(generateTraffic);
-
-                        sleep(5);
 
                         // Create UDP socket
                         int clientSocket;
@@ -624,12 +621,10 @@ int main() {
 
     int redPoints = 0;
     int greenPoints = 0;
-    const sf::Time gameTime = sf::second(390);
 
     // SFML rendering code
     if (playAction == 1)
     {
-        sf::Clock gameTimer;
 
         for (int i = 0; i < rows; ++i)
         {
@@ -888,8 +883,6 @@ int main() {
 
             //Meat and potatoes of it
             sleep(1);
-            if (gameTimer.getElapsedTime() >= gameTime)
-            {
             if (cooldownTimer.getElapsedTime() >= cooldownDuration) {
                     actionMessage message;
 
@@ -943,6 +936,8 @@ int main() {
                 
                     if (targetPlayer != "43" && targetPlayer != "53")
                     {
+                        if (attackerPlayerNum == 221)
+                            break;
                         if(attackerPlayerNum % 2 == 0)
                         {
                             ack_message = "Received hit from " + playerListGreen[stoi(attackerPlayer) / greenPlayerCount - 1].name + " on " + playerListRed[stoi(targetPlayer) / redPlayerCount].name;
@@ -964,6 +959,7 @@ int main() {
                         {
                             ack_message = "Received hit from " + playerListRed[stoi(attackerPlayer) / redPlayerCount].name + " on the green base";
                             playerListRed[attackerPlayerNum / 2].points = playerListRed[attackerPlayerNum / 2].points + 100;
+                            playerListRed[attackerPlayerNum / 2].hitBase = 1;
 
                             whiteText.setString(ack_message);
                             pointTotalRed += 100;
@@ -973,6 +969,7 @@ int main() {
                         {
                             ack_message = "Received hit from " + playerListGreen[stoi(attackerPlayer) / greenPlayerCount - 1].name + " on the red base";
                             playerListGreen[attackerPlayerNum / 2 - 1].points += 100;
+                            playerListGreen[attackerPlayerNum / 2 - 1].hitBase = 1;
 
                             whiteText.setString(ack_message);
                             pointTotalGreen += 100;
@@ -1009,7 +1006,6 @@ int main() {
                     // count = count + 1;            
   
             }
-        }
             redPoints = redPoints + pointTotalRed;
             greenPoints = greenPoints + pointTotalGreen;
 
@@ -1052,9 +1048,9 @@ int main() {
         trafficThread.join();
         responseThread.join();
     }
+    }
         return 0;
-    }
-    }
+}
 // //cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release .
 
 // //mingw32-make clean
